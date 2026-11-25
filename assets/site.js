@@ -113,7 +113,8 @@ $$('[data-voice]').forEach(function(b){b.addEventListener('click',function(){
     var w=d.createElement('elevenlabs-convai');w.setAttribute('agent-id',b.getAttribute('data-voice'));d.body.appendChild(w);
     var s=d.createElement('script');s.src='https://unpkg.com/@elevenlabs/convai-widget-embed';s.async=true;d.head.appendChild(s);
   }
-  $$('[data-voice]').forEach(function(x){x.textContent='Assistant ready, bottom right of the screen'});
+  d.body.classList.add('voice-on');
+  $$('.talk [data-voice]').forEach(function(x){x.textContent='Assistant ready, bottom right of the screen'});
 })});
 onScroll();
 })();

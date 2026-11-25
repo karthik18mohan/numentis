@@ -27,7 +27,8 @@ okrgb={'250,250,247','15,20,25','107,111,118','245,241,234','194,65,12'}
 badrgb=[r for r in rgbas if ','.join(x.strip() for x in r.split(',')[:3]) not in okrgb]
 rec('C1b','rgba tints only of brand colours',not badrgb,str(badrgb))
 rec('C2','No gradients on terracotta; no forest',not re.search(r'gradient\([^)]*(194,65,12|C2410C)',css,re.I) and '1B3A2F'.lower() not in css.lower())
-rec('C3','No terracotta circles/dots (border-radius 50%/999px with terracotta bg)',not re.search(r'border-radius:\s*(50%|999)',css))
+round_terra=[b for b in re.findall(r'\{[^{}]*\}',css) if re.search(r'border-radius:\s*(50%|999)',b) and re.search(r'--terra|c2410c|194,\s*65,\s*12',b,re.I)]
+rec('C3','No terracotta circles/dots (border-radius 50%/999px with terracotta bg)',not round_terra,str(round_terra[:2]))
 # fonts
 fam=set(re.findall(r"font-family:\s*([^;}]+)",css))
 rec('T1','Only Fraunces/Onest/JetBrains Mono families (+ system fallbacks)',all(re.search(r"var\(--(serif|sans|mono)\)|^'(Fraunces|Onest|JetBrains Mono)'",f.strip()) for f in fam),str(fam))
