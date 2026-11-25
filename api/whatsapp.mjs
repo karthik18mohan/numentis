@@ -35,7 +35,8 @@ async function handle(msg, name) {
   if (!reply) reply = `${FALLBACK} ${HANDOFF}`;
   const handoff = reply.includes(HANDOFF);
   reply = reply.replaceAll(HANDOFF, '').trim();
-  await waSend(from, reply);
+  const sent = await waSend(from, reply);
+  console.log('whatsapp reply', { sent, handoff, ai: !HUMAN.test(text) });
   if (handoff) {
     await saveLead({ time: new Date().toISOString(), name: name || 'WhatsApp contact', mobile: `+${from}`, who: 'WhatsApp chat: needs a counsellor', language: '', source: 'whatsapp', medium: 'chat', campaign: '', page: `Last message: ${text.slice(0, 250)}` });
   }
@@ -43,13 +44,14 @@ async function handle(msg, name) {
 
 export async function POST(request) {
   const raw = await request.text();
-  if (!signatureOk(raw, request.headers.get('x-hub-signature-256'))) return new Response('bad signature', { status: 401 });
+  if (!signatureOk(raw, request.headers.get('x-hub-signature-256'))) { console.error('whatsapp bad signature'); return new Response('bad signature', { status: 401 }); }
   let body;
   try { body = JSON.parse(raw); } catch { return new Response('ok'); }
   const jobs = [];
   for (const entry of body.entry || []) {
     for (const change of entry.changes || []) {
       const v = change.value || {};
+      console.log('whatsapp webhook', change.field, { messages: (v.messages || []).length, statuses: (v.statuses || []).map((x) => x.status + (x.errors ? ':' + x.errors.map((e) => e.code).join(',') : '')) });
       const names = Object.fromEntries((v.contacts || []).map((c) => [c.wa_id, c.profile?.name || '']));
       for (const msg of v.messages || []) jobs.push(handle(msg, names[msg.from]).catch((e) => console.error('whatsapp handle', e)));
     }
