@@ -50,18 +50,27 @@ export const HANDOFF = '[[HANDOFF]]';
 export async function askAssistant(userText, userName) {
   const key = env('GEMINI_API_KEY');
   if (!key) return null;
-  const model = env('GEMINI_MODEL') || 'gemini-3.8-flash';
+  const models = [env('GEMINI_MODEL') || 'gemini-3.8-flash', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
   const system = `${KB}\n\n## Channel\nYou are replying on WhatsApp${userName ? ` to ${userName}` : ''}. Each message arrives without the earlier conversation, so do not refer to "earlier". If this looks like the first message (a greeting or a general question), start by saying you are the Numentis Skills Lab AI assistant. When you must hand over to a human counsellor, reply with a short line saying a counsellor will message them, and end the reply with ${HANDOFF}.`;
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: 'user', parts: [{ text: userText.slice(0, 2000) }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 2048 },
-    }),
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: system }] },
+    contents: [{ role: 'user', parts: [{ text: userText.slice(0, 2000) }] }],
+    generationConfig: { temperature: 0.3, maxOutputTokens: 2048 },
   });
-  if (!r.ok) { console.error('gemini failed', r.status, await r.text()); return null; }
+  // Busy (429/5xx) or retired (404) models: try the next one, with a short pause.
+  let r;
+  for (const [i, model] of [...new Set(models)].entries()) {
+    if (i) await new Promise((ok) => setTimeout(ok, 800));
+    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+      body,
+    });
+    if (r.ok) break;
+    console.error('gemini failed', model, r.status, (await r.text()).slice(0, 300));
+    if (![404, 429, 500, 502, 503, 504].includes(r.status)) return null;
+  }
+  if (!r.ok) return null;
   const j = await r.json();
   const c = j.candidates?.[0];
   const text = (c?.content?.parts || []).map((p) => p.text || '').join('').trim();
