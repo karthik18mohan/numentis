@@ -90,8 +90,17 @@ if(dlg&&typeof dlg.showModal==='function'){
     e.preventDefault();
     var ok=form.elements.fullname.value.trim().length>1&&/^[+0-9 ()-]{8,16}$/.test(form.elements.mobile.value.trim())&&form.elements.who.value&&form.elements.consent.checked;
     if(!ok){err.textContent='Please fill in the marked fields and tick the consent box.';return}
-    form.hidden=true;$('.done',dlg).hidden=false;
+    var ep=form.getAttribute('data-endpoint'),doneMsg=$('.done .s',dlg);
+    if(!ep){form.hidden=true;$('.done',dlg).hidden=false;return}
+    var q=new URLSearchParams(location.search),btn=$('button[type=submit]',form);
+    var data={name:form.elements.fullname.value.trim(),mobile:form.elements.mobile.value.trim(),who:form.elements.who.value,language:form.elements.lang.value,consent:'yes',page:location.href,source:q.get('utm_source')||'',medium:q.get('utm_medium')||'',campaign:q.get('utm_campaign')||'',time:new Date().toISOString()};
+    btn.disabled=true;err.textContent='';
+    fetch(ep,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}).then(function(){
+      doneMsg.textContent='A counsellor will call or WhatsApp you shortly, in English or Malayalam.';form.hidden=true;$('.done',dlg).hidden=false;
+    }).catch(function(){btn.disabled=false;err.textContent='Could not send. Please try again.'});
   });
+  /* ad links: /book, ?book or #book open the form straight away */
+  if(/^\/book\/?$/.test(location.pathname)||/(^|[?&#])book(=|&|$)/.test(location.search+location.hash)){dlg.showModal()}
 }else{
   $$('[data-counsel]').forEach(function(b){b.setAttribute('href','#counsel-fallback')});
 }
