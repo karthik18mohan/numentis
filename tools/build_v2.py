@@ -80,7 +80,7 @@ DIALOG='''<dialog id="counsel" aria-labelledby="dlgT">
 def talk():
     b=[]
     if VOICE_AGENT_ID:b.append(f'<button type="button" class="btn btn--line" data-voice="{VOICE_AGENT_ID}">Talk to our AI assistant</button>')
-    if WHATSAPP_NUMBER:b.append(f'<a class="btn btn--line" href="https://wa.me/{WHATSAPP_NUMBER}?text=Hello%2C%20I%20would%20like%20to%20know%20about%20the%20Accounts%20Executive%20programme." target="_blank" rel="noopener">Chat on WhatsApp</a>')
+    if WHATSAPP_NUMBER:b.append(f'<a class="btn btn--line" href="https://wa.me/{WHATSAPP_NUMBER}?text=Hi" target="_blank" rel="noopener">Chat on WhatsApp</a>')
     return f'<div class="talk">{"".join(b)}</div>' if b else ''
 DIALOG=DIALOG.replace('{TALK}',talk())
 
@@ -117,7 +117,7 @@ CALL_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-widt
 
 def dock():
     if WHATSAPP_NUMBER:
-        wa=f'<a class="dock__b" href="https://wa.me/{WHATSAPP_NUMBER}?text=Hello%2C%20I%20would%20like%20to%20know%20about%20the%20Accounts%20Executive%20programme." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">{WA_SVG}</a>'
+        wa=f'<a class="dock__b" href="https://wa.me/{WHATSAPP_NUMBER}?text=Hi" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">{WA_SVG}</a>'
     else:
         wa=f'<button type="button" class="dock__b" data-counsel aria-label="Ask a counsellor to WhatsApp you" title="Ask a counsellor to WhatsApp you">{WA_SVG}</button>'
     if VOICE_AGENT_ID:

@@ -1,13 +1,13 @@
 """Create or update the Numentis Skills Lab voice agent on ElevenLabs.
 
 Usage (PowerShell):
-  $env:ELEVENLABS_API_KEY = "<your key>"
   python tools/elevenlabs_agent.py [site_url]
+It asks for the ElevenLabs API key (hidden while you paste) unless ELEVENLABS_API_KEY is set.
 
 site_url defaults to https://numentis.vercel.app. The agent id is saved in tools/elevenlabs_agent.json and
 written into VOICE_AGENT_ID in tools/build_v2.py; rebuild afterwards.
 """
-import json, os, pathlib, re, sys, urllib.request, urllib.error
+import getpass, json, os, pathlib, re, sys, urllib.request, urllib.error
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 STATE = ROOT / 'tools' / 'elevenlabs_agent.json'
@@ -15,7 +15,7 @@ API = 'https://api.elevenlabs.io/v1/convai'
 KEY = os.environ.get('ELEVENLABS_API_KEY', '').strip()
 SITE = (sys.argv[1] if len(sys.argv) > 1 else 'https://numentis.vercel.app').rstrip('/')
 LANG = os.environ.get('VOICE_LANGUAGE', 'en')
-LLM = os.environ.get('VOICE_LLM', 'gemini-2.5-flash')
+LLM = os.environ.get('VOICE_LLM', '')  # empty = ElevenLabs' default model
 
 FIRST = ('Hello, I am the Numentis Skills Lab AI assistant. I can answer questions about the '
          'Accounts Executive programme or book a counselling call for you. How can I help?')
@@ -66,8 +66,11 @@ def tool_config():
 
 
 def main():
+    global KEY
     if not KEY:
-        sys.exit('Set ELEVENLABS_API_KEY first (ElevenLabs > Developers > API keys).')
+        KEY = getpass.getpass('Paste ElevenLabs API key (ElevenLabs > Developers > API keys): ').strip()
+    if not KEY:
+        sys.exit('No API key given.')
     state = json.loads(STATE.read_text()) if STATE.exists() else {}
     kb = (ROOT / 'docs' / 'knowledge-base.md').read_text(encoding='utf-8')
 
@@ -86,7 +89,7 @@ def main():
         'name': 'Numentis Skills Lab assistant',
         'conversation_config': {
             'agent': {'first_message': FIRST, 'language': LANG,
-                      'prompt': {'prompt': kb + VOICE_RULES, 'llm': LLM, 'tool_ids': tool_ids}},
+                      'prompt': {'prompt': kb + VOICE_RULES, 'tool_ids': tool_ids, **({'llm': LLM} if LLM else {})}},
         },
     }
     if state.get('agent_id'):
