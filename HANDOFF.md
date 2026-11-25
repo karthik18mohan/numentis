@@ -73,3 +73,17 @@ Owner: Karthik (freelance web developer; data scientist by day). Client: a new c
 - `numentis.vercel.app` is now attached to project `numentis-skills-lab`, following branch `skills-lab-v2`.
 - Built: `/api/lead` (one lead endpoint for form, WhatsApp and voice; forwards to the Sheet and alerts the counsellor), `/api/whatsapp` (Meta Cloud API webhook + Gemini answers + human handoff), `tools/elevenlabs_agent.py` (voice agent + booking tool), optional "Talk to our AI assistant" and "Chat on WhatsApp" buttons. Knowledge base: `docs/knowledge-base.md` (builder copies it to `api/_kb.mjs`).
 - Everything switches on through Vercel env vars; steps in `docs/INTEGRATIONS.md`. Vercel Authentication still needs Karthik to switch it off.
+
+## 10. Two review sites (25 Nov 2026, evening)
+
+| Site | Branch | What it shows |
+|---|---|---|
+| numentis.vercel.app (also numentis-skills.vercel.app) | `skills-lab-v2` | Client review site. No WhatsApp or call features: `CONTACT_FEATURES=False` in `tools/build_v2.py`. |
+| numentis1.vercel.app | `skills-lab-v2-ai` | Same site plus floating WhatsApp and call circles: `CONTACT_FEATURES=True`. |
+
+- The two branches differ only in that one line and the generated HTML. Make changes on `skills-lab-v2`, then bring them to `skills-lab-v2-ai` (cherry-pick, or merge and keep `CONTACT_FEATURES=True`), rebuild there, QC, push.
+- Both branches keep the APIs (`/api/lead`, `/api/whatsapp`). The Meta webhook and the ElevenLabs booking tool point at `numentis.vercel.app`, so they keep working.
+- WhatsApp circle: `wa.me/15551847712?text=Hi` (Meta test number). Replace `WHATSAPP_NUMBER` with the real Numentis number once it is registered in Meta.
+- WhatsApp bot: Meta delivers messages (WABA 1453085660373335 linked to the app with `tools/wa_subscribe.ps1`), but replies fail with 131031 "Business account locked" until Numentis completes Meta business verification. Gemini default model `gemini-3.8-flash`, with fallbacks to other flash models when busy.
+- Call circle: one click starts a call with ElevenLabs agent `agent_4501m89wekzhe6ys4kedff6spmjn` (Karthik's ElevenLabs account, free plan, 15 min a month, no commercial licence; Starter or higher before launch). The agent was set up in the ElevenLabs dashboard: knowledge base prompt, English and Malayalam, `book_counselling` tool to `/api/lead`, allowlist numentis.vercel.app, numentis1.vercel.app, numentis-skills.vercel.app, numentis.in, www.numentis.in.
+- Before launch: Vercel Pro (Hobby is non-commercial), ElevenLabs Starter or higher, Gemini paid tier (free Flash is about 20 requests a day), Meta business verification.
