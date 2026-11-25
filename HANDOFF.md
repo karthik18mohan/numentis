@@ -66,3 +66,10 @@ Owner: Karthik (freelance web developer; data scientist by day). Client: a new c
 5. Build the WhatsApp assistant proof of concept (Vercel function, knowledge base from the site copy, human handoff flag), then the voice proof of concept on Sarvam.
 6. Optional: custom domain `numentis.in`, ad pixel, remove any remaining preview wording once the form is live.
 7. Merge `skills-lab-v2` to `main` only when Karthik says so.
+
+## 9. Update 25 Nov 2026 (Windows session)
+
+- Paths in `build_v2.py`, `qc.py`, `serve.py` are now relative to the repo; the brand pack is found at `../Numentis_Brand_Final` (override with `NUMENTIS_PACK`). Local server port is 8790 (`NUMENTIS_PORT`), as 8765 is taken on Karthik's PC. `.gitattributes` keeps LF so logo SVGs stay byte-identical on Windows.
+- `numentis.vercel.app` is now attached to project `numentis-skills-lab`, following branch `skills-lab-v2`.
+- Built: `/api/lead` (one lead endpoint for form, WhatsApp and voice; forwards to the Sheet and alerts the counsellor), `/api/whatsapp` (Meta Cloud API webhook + Gemini answers + human handoff), `tools/elevenlabs_agent.py` (voice agent + booking tool), optional "Talk to our AI assistant" and "Chat on WhatsApp" buttons. Knowledge base: `docs/knowledge-base.md` (builder copies it to `api/_kb.mjs`).
+- Everything switches on through Vercel env vars; steps in `docs/INTEGRATIONS.md`. Vercel Authentication still needs Karthik to switch it off.

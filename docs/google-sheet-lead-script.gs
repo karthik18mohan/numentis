@@ -2,7 +2,8 @@
 // 1) Create a Google Sheet. Row 1 headers: Time | Name | Mobile | You are | Language | Source | Medium | Campaign | Page
 // 2) Extensions > Apps Script > paste this file > Save.
 // 3) Deploy > New deployment > Web app > Execute as: Me > Who has access: Anyone > Deploy. Copy the Web app URL.
-// 4) Put that URL in the form's data-endpoint attribute (build_v2.py DIALOG) and redeploy.
+// 4) Put that URL in the Vercel env var SHEET_WEBHOOK_URL (project numentis-skills-lab) and redeploy.
+//    The website form, the WhatsApp assistant and the voice agent all send leads through /api/lead to this sheet.
 function doPost(e) {
   var d = JSON.parse(e.postData.contents);
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];

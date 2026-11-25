@@ -1,3 +1,5 @@
+import os as _os
+BASE=_os.environ.get('NUMENTIS_BASE','http://127.0.0.1:8790')
 import asyncio, sys, pathlib
 sys.path.insert(0,'.')
 from playwright.async_api import async_playwright
@@ -27,7 +29,7 @@ async def main(out):
             pg.on('pageerror',lambda e:logs.append('PAGEERROR '+str(e)))
             await pg.route('**/*',route)
             for name,path in (('home','/'),('prog','/programme')):
-                await pg.goto('http://127.0.0.1:8765'+path);await pg.wait_for_timeout(2200)
+                await pg.goto(BASE+''+path);await pg.wait_for_timeout(2200)
                 await pg.screenshot(path=str(o/f'{lab}-{name}-fold.png'))
                 # scroll through to trigger observers
                 h=await pg.evaluate('document.documentElement.scrollHeight');y=0

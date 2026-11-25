@@ -1,10 +1,13 @@
-import asyncio,sys,re,hashlib,pathlib,json
-exec(open('shoot_v2.py').read().split('async def main')[0].replace('import asyncio, sys, pathlib','import pathlib'))
+import os as _os
+BASE=_os.environ.get('NUMENTIS_BASE','http://127.0.0.1:8790')
+import asyncio,sys,re,hashlib,pathlib,json,os
+SITE=pathlib.Path(__file__).resolve().parent
+exec((SITE/'tools'/'shoot_v2.py').read_text(encoding='utf-8').split('async def main')[0].replace('import asyncio, sys, pathlib','import pathlib'))
 from playwright.async_api import async_playwright
-SITE=pathlib.Path('/home/claude/numentis-v2');PACK=pathlib.Path('/mnt/user-data/uploads/Numentis_Brand_Final/Numentis_Brand_Final')
+PACK=pathlib.Path(os.environ.get('NUMENTIS_PACK',SITE.parent/'Numentis_Brand_Final'))
 R=[]
 def rec(id,desc,ok,detail=''):R.append((id,desc,bool(ok),detail))
-files={p.name:p.read_text() for p in [SITE/'index.html',SITE/'programme.html',SITE/'assets/site.css',SITE/'assets/site.js']}
+files={p.name:p.read_text(encoding='utf-8') for p in [SITE/'index.html',SITE/'programme.html',SITE/'assets/site.css',SITE/'assets/site.js']}
 html=files['index.html']+files['programme.html'];css=files['site.css'];js=files['site.js']
 
 # L1 logos byte-identical to pack
@@ -13,7 +16,7 @@ h=lambda p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
 bad=[k for k,v in pairs.items() if h(SITE/'assets'/k)!=h(PACK/v)]
 rec('L1','Logos/favicon byte-identical to brand pack',not bad,str(bad))
 # logo files contain terracotta dot colour
-rec('L3','Logo SVGs carry #C2410C dot',all('C2410C' in (SITE/'assets'/k).read_text() for k in pairs if k.endswith('svg') and 'white' in k or k=='logo-skills-lab-horizontal-ink.svg'))
+rec('L3','Logo SVGs carry #C2410C dot',all('C2410C' in (SITE/'assets'/k).read_text(encoding='utf-8') for k in pairs if k.endswith('svg') and 'white' in k or k=='logo-skills-lab-horizontal-ink.svg'))
 # C1 palette
 allowed={'c2410c','0f1419','fafaf7','f5f1ea','6b6f76'}
 hexes=set(x.lower() for x in re.findall(r'#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b',css+js+re.sub(r'&#\d+;','',html)))
@@ -54,7 +57,7 @@ async def main():
         ctx=await b.new_context(viewport={'width':1440,'height':900});pg=await ctx.new_page();await pg.route('**/*',route)
         errs=[];pg.on('console',lambda m:errs.append(m.text) if m.type=='error' else None);pg.on('pageerror',lambda e:errs.append(str(e)))
         for path in ('/','/programme'):
-            await pg.goto('http://127.0.0.1:8765'+path);await pg.wait_for_timeout(1800)
+            await pg.goto(BASE+''+path);await pg.wait_for_timeout(1800)
             m=await pg.evaluate('''()=>{
               const cs=(e)=>getComputedStyle(e);const o={};
               const b=cs(document.body);o.body=[b.fontFamily,b.fontSize,b.fontWeight,b.lineHeight,b.letterSpacing,b.color];
@@ -82,12 +85,12 @@ async def main():
         for w in (360,390,768,1024):
             c2=await b.new_context(viewport={'width':w,'height':800});q=await c2.new_page();await q.route('**/*',route)
             for path in ('/','/programme'):
-                await q.goto('http://127.0.0.1:8765'+path);await q.wait_for_timeout(900)
+                await q.goto(BASE+''+path);await q.wait_for_timeout(900)
                 sw=await q.evaluate('document.documentElement.scrollWidth');rec(f'W3e {w}{path}',f'No horizontal overflow at {w}px',sw<=w,str(sw))
             await c2.close()
         # contrast on all visible text nodes (home+programme) in light mode
         for path in ('/','/programme'):
-            await pg.goto('http://127.0.0.1:8765'+path);await pg.wait_for_timeout(1200)
+            await pg.goto(BASE+''+path);await pg.wait_for_timeout(1200)
             await pg.evaluate('document.querySelectorAll("[data-r],.steps__grid").forEach(e=>e.classList.add("in"));document.querySelectorAll(".tasks li").forEach(e=>e.classList.add("on"));document.querySelectorAll(".w").forEach(e=>e.classList.add("lit"))');await pg.wait_for_timeout(900)
             res=await pg.evaluate('''()=>{
               function bg(e){while(e){const c=getComputedStyle(e).backgroundColor;const m=c.match(/[\\d.]+/g);if(m&&(m.length<4||+m[3]>0.5))return m.slice(0,3).map(Number);e=e.parentElement}return [250,250,247]}
@@ -105,7 +108,7 @@ async def main():
                 if c<need-0.01:low.append((r['t'],round(c,2)))
             rec('W3f'+path,'Text contrast >= 4.5:1 (AA)',not low,str(low[:6]))
         # keyboard: dialog opens, esc closes
-        await pg.goto('http://127.0.0.1:8765/');await pg.wait_for_timeout(600)
+        await pg.goto(BASE+'/');await pg.wait_for_timeout(600)
         await pg.click('.head .btn');await pg.wait_for_timeout(300)
         op=await pg.evaluate('document.getElementById("counsel").open');await pg.keyboard.press('Escape');await pg.wait_for_timeout(200)
         cl=await pg.evaluate('!document.getElementById("counsel").open')

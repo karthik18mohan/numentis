@@ -1,3 +1,5 @@
+import os as _os
+BASE=_os.environ.get('NUMENTIS_BASE','http://127.0.0.1:8790')
 import asyncio,sys
 from playwright.async_api import async_playwright
 JS='''()=>{const h=document.querySelector('.hero'),rl=(()=>{const d=document.createElement('div');d.style.cssText='height:var(--rl);position:absolute';h.appendChild(d);const v=d.getBoundingClientRect().height;d.remove();return v})(),top=h.getBoundingClientRect().top;
@@ -14,7 +16,7 @@ async def main(w,hh):
     async with async_playwright() as p:
         b=await p.chromium.launch();pg=await b.new_page(viewport={'width':w,'height':hh})
         await pg.route('**/fonts.g*',lambda r:r.abort())
-        await pg.goto('http://127.0.0.1:8765/');await pg.wait_for_timeout(2500)
+        await pg.goto(BASE+'/');await pg.wait_for_timeout(2500)
         o=await pg.evaluate(JS);rl=o['rl'];print(o)
         # baseline - line positions: targets k*rl-1
         T={'eyebrow':2,'h1a':5,'h1b':8,'lead':13}

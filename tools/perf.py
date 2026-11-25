@@ -1,3 +1,5 @@
+import os as _os
+BASE=_os.environ.get('NUMENTIS_BASE','http://127.0.0.1:8790')
 import asyncio,json
 from playwright.async_api import async_playwright
 async def run(name,down,lat,cpu):
@@ -7,7 +9,7 @@ async def run(name,down,lat,cpu):
         await c.send('Network.enable');await c.send('Network.emulateNetworkConditions',{'offline':False,'downloadThroughput':down*1024/8,'uploadThroughput':down*1024/8/2,'latency':lat})
         await c.send('Emulation.setCPUThrottlingRate',{'rate':cpu})
         await pg.add_init_script("window.__m={};new PerformanceObserver(l=>{for(const e of l.getEntries())window.__m[e.entryType+(e.name?':'+e.name:'')]=e.startTime}).observe({type:'paint',buffered:true});new PerformanceObserver(l=>{for(const e of l.getEntries())window.__m.lcp=e.startTime}).observe({type:'largest-contentful-paint',buffered:true})")
-        await pg.goto('http://127.0.0.1:8765/',wait_until='load')
+        await pg.goto(BASE+'/',wait_until='load')
         t=await pg.evaluate("performance.now()")
         await pg.wait_for_timeout(1500)
         m=await pg.evaluate("window.__m")

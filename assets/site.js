@@ -95,8 +95,10 @@ if(dlg&&typeof dlg.showModal==='function'){
     var q=new URLSearchParams(location.search),btn=$('button[type=submit]',form);
     var data={name:form.elements.fullname.value.trim(),mobile:form.elements.mobile.value.trim(),who:form.elements.who.value,language:form.elements.lang.value,consent:'yes',page:location.href,source:q.get('utm_source')||'',medium:q.get('utm_medium')||'',campaign:q.get('utm_campaign')||'',time:new Date().toISOString()};
     btn.disabled=true;err.textContent='';
-    fetch(ep,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)}).then(function(){
-      doneMsg.textContent='A counsellor will call or WhatsApp you shortly, in English or Malayalam.';form.hidden=true;$('.done',dlg).hidden=false;
+    fetch(ep,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(j){
+      if(!j.ok)throw new Error('rejected');
+      doneMsg.textContent=j.delivered?'A counsellor will call or WhatsApp you shortly, in English or Malayalam.':'Preview: the lead system is not connected yet, so nothing was sent.';
+      form.hidden=true;$('.done',dlg).hidden=false;
     }).catch(function(){btn.disabled=false;err.textContent='Could not send. Please try again.'});
   });
   /* ad links: /book, ?book or #book open the form straight away */
@@ -104,5 +106,14 @@ if(dlg&&typeof dlg.showModal==='function'){
 }else{
   $$('[data-counsel]').forEach(function(b){b.setAttribute('href','#counsel-fallback')});
 }
+/* AI voice assistant (ElevenLabs): the widget script loads only after a click */
+$$('[data-voice]').forEach(function(b){b.addEventListener('click',function(){
+  if(dlg&&dlg.open)dlg.close();
+  if(!$('elevenlabs-convai')){
+    var w=d.createElement('elevenlabs-convai');w.setAttribute('agent-id',b.getAttribute('data-voice'));d.body.appendChild(w);
+    var s=d.createElement('script');s.src='https://unpkg.com/@elevenlabs/convai-widget-embed';s.async=true;d.head.appendChild(s);
+  }
+  $$('[data-voice]').forEach(function(x){x.textContent='Assistant ready, bottom right of the screen'});
+})});
 onScroll();
 })();

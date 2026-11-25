@@ -167,6 +167,8 @@ h3{font-family:var(--serif);font-weight:400;line-height:1.15;letter-spacing:-.02
 .cta h2{font-size:clamp(2.4rem,4.32vw,3.89rem);margin-top:22px}
 .cta p.lead{font-size:16px;color:rgba(15,20,25,.8);max-width:26em}
 .cta .btn{margin-top:26px}
+.talk{display:flex;flex-wrap:wrap;gap:12px}
+.cta .talk .btn,.dlg .talk .btn{margin-top:12px}
 
 /* FOOTER */
 .foot{background:var(--ink);color:var(--paper);padding:clamp(56px,5.76vw,79.2px) 0 28px}
