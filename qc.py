@@ -27,7 +27,8 @@ rec('C2','No gradients on terracotta; no forest',not re.search(r'gradient\([^)]*
 rec('C3','No terracotta circles/dots (border-radius 50%/999px with terracotta bg)',not re.search(r'border-radius:\s*(50%|999)',css))
 # fonts
 fam=set(re.findall(r"font-family:\s*([^;}]+)",css))
-rec('T1','Only Fraunces/Onest/JetBrains Mono families (+ system fallbacks)',all(re.search(r"var\(--(serif|sans|mono)\)",f) for f in fam),str(fam))
+rec('T1','Only Fraunces/Onest/JetBrains Mono families (+ system fallbacks)',all(re.search(r"var\(--(serif|sans|mono)\)|^'(Fraunces|Onest|JetBrains Mono)'",f.strip()) for f in fam),str(fam))
+rec('T1c','Fonts self-hosted, no Google Fonts requests','googleapis' not in html and '@font-face' in css and all((SITE/'assets/fonts'/f).exists() for f in ['fraunces-normal.woff2','fraunces-italic.woff2','onest.woff2','jetbrains-mono-400.woff2','jetbrains-mono-500.woff2']))
 rec('T1b','No Familjen Grotesk text (logo files only)','familjen' not in (css+html+js).lower())
 # V
 text=re.sub(r'<script.*?</script>|<style.*?</style>','',html,flags=re.S);text=re.sub(r'<[^>]+>',' ',text)
@@ -35,7 +36,7 @@ words=['synergy','synergies','leverage','paradigm','ecosystem','journey','world-
 rec('V1','No banned jargon/puffery',not [w for w in words if w in text.lower()],str([w for w in words if w in text.lower()]))
 rec('V2','No exclamation marks, no emoji in copy','!' not in text and not re.search('[\U0001F300-\U0001FAFF☀-➿]',text))
 rec('V4','Position statement verbatim','Numentis is the finance services group for businesses that take finance seriously — and the next generation of professionals who will run them.' in files['index.html'])
-rec('W4','Facts present: 4 months, 6 modules, Calicut, ₹50,000, ₹40,000',all(s in html for s in ['4 months','Calicut','₹50,000','₹40,000','practitioners']))
+rec('W4','Facts present: 4 months, 6 modules, Calicut, ₹50,000, ₹40,000',all(s in re.sub(r'<[^>]+>','',html) for s in ['4 months','Calicut','₹50,000','₹40,000','practitioners']))
 rec('W5','No invented contact details (phone/email/address)',not re.search(r'\+91[ 0-9]{6,}|@[a-z]+\.[a-z]{2,}',text))
 rec('W5b','Verticals alphabetical & equal weight in footer',html.count('<li>Audit &amp; Advisory</li><li>Next</li><li>Skills Lab</li><li>Strategy &amp; Finance</li>')==2)
 rec('W3a','All images have alt',all('alt="' in m for m in re.findall(r'<img[^>]*>',html)))

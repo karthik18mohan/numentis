@@ -11,9 +11,8 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=JetBrains+Mono:wght@400;500&family=Onest:wght@300..600&display=swap">
+<link rel="preload" href="/assets/fonts/fraunces-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/onest.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
@@ -49,12 +48,12 @@
     <p class="label">Basic Level</p>
     <h1 aria-label="The Accounts Executive programme."><span class="ln" aria-hidden="true"><span>The Accounts</span></span><span class="ln" aria-hidden="true"><span>Executive <em>programme.</em></span></span></h1>
     <p class="phero__lead" data-r>Six modules that follow money through a business: sales, purchases, books, banks, compliance and reporting, then a capstone and interview preparation.</p>
-    <a class="btn btn--primary" href="#" data-counsel>Book counselling <span class="arr" aria-hidden="true">&rarr;</span></a>
+    <a class="btn btn--primary" href="#" data-counsel>Book counselling <span class="arr" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></a>
 <div class="stats">
       <div><p class="label">Duration</p><span class="metric" data-count="4" data-suf=" months">4 months</span></div>
       <div><p class="label">Modules</p><span class="metric" data-count="6">6</span></div>
       <div><p class="label">Format</p><span class="metric sm">In person, Calicut</span></div>
-      <div><p class="label">Fee</p><span class="metric" data-count="50000" data-pre="₹">₹50,000</span></div>
+      <div><p class="label">Fee</p><span class="metric" data-count="50000" data-pre="₹"><span class="rs">₹</span>50,000</span></div>
     </div>
   </div>
 </section>
@@ -94,8 +93,8 @@
     <p class="label" data-r>Fees</p>
     <h2 data-r style="font-size:clamp(2.2rem,5vw,4.4rem);margin-top:22px">What does it <em>cost?</em></h2>
     <div class="fees" data-r>
-      <div><p class="label">Fee</p><span class="metric" data-count="50000" data-pre="₹">₹50,000</span></div>
-      <div><p class="label">If you pay the full fee at once</p><span class="metric" data-count="40000" data-pre="₹">₹40,000</span></div>
+      <div><p class="label">Fee</p><span class="metric" data-count="50000" data-pre="₹"><span class="rs">₹</span>50,000</span></div>
+      <div><p class="label">If you pay the full fee at once</p><span class="metric" data-count="40000" data-pre="₹"><span class="rs">₹</span>40,000</span></div>
     </div>
     <p class="fees__note" data-r>Instalment plans are explained at counselling.</p>
   </div>
@@ -106,7 +105,7 @@
     <p class="label" data-r>Questions</p>
     <h2 data-r style="font-size:clamp(2.2rem,5vw,4.4rem);margin-top:22px">Before you <em>ask.</em></h2>
     <div class="faq" data-r>
-<details><summary>Who is the programme for?<i aria-hidden="true"></i></summary><p>Final-year commerce students, fresh B.Com, M.Com, BBA and MBA graduates, and junior accountants in their first two years at work. A counselling session confirms whether it fits you.</p></details><details><summary>How long is it, and where are classes held?<i aria-hidden="true"></i></summary><p>Four months, in six modules. Classes are in person, in our classroom in Calicut (Kozhikode).</p></details><details><summary>What does it cost?<i aria-hidden="true"></i></summary><p>The fee is ₹50,000. If you pay the full fee at once, it is ₹40,000. Instalment plans are explained at counselling.</p></details><details><summary>When does the next batch start?<i aria-hidden="true"></i></summary><p>Batch dates will be announced soon. Book a counselling session and we will tell you as soon as they are fixed.</p></details>
+<details><summary>Who is the programme for?<i aria-hidden="true"></i></summary><p>Final-year commerce students, fresh B.Com, M.Com, BBA and MBA graduates, and junior accountants in their first two years at work. A counselling session confirms whether it fits you.</p></details><details><summary>How long is it, and where are classes held?<i aria-hidden="true"></i></summary><p>Four months, in six modules. Classes are in person, in our classroom in Calicut (Kozhikode).</p></details><details><summary>What does it cost?<i aria-hidden="true"></i></summary><p>The fee is <span class="rs">₹</span>50,000. If you pay the full fee at once, it is <span class="rs">₹</span>40,000. Instalment plans are explained at counselling.</p></details><details><summary>When does the next batch start?<i aria-hidden="true"></i></summary><p>Batch dates will be announced soon. Book a counselling session and we will tell you as soon as they are fixed.</p></details>
     </div>
   </div>
 </section>
@@ -114,7 +113,7 @@
 <section class="sec cta">
   <div class="wrap cta__grid">
     <div data-r><p class="label">Counselling</p><h2>Book a counselling <em>session.</em></h2></div>
-    <div data-r style="--d:1"><p class="lead">Leave your number and a counsellor will call or WhatsApp you, in English or Malayalam.</p><a class="btn btn--primary" href="#" data-counsel>Book counselling <span class="arr" aria-hidden="true">&rarr;</span></a></div>
+    <div data-r style="--d:1"><p class="lead">Leave your number and a counsellor will call or WhatsApp you, in English or Malayalam.</p><a class="btn btn--primary" href="#" data-counsel>Book counselling <span class="arr" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></a></div>
   </div>
 </section>
 

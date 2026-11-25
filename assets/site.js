@@ -59,13 +59,14 @@ if(tasks.length&&'IntersectionObserver' in window){
 
 /* count-up for the figures */
 var nums=$$('[data-count]');
+function rs(x){return x.replace('₹','<span class="rs">₹</span>')}
 function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')}
 if(nums.length){
   var co='IntersectionObserver' in window&&!reduce?new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;co.unobserve(e.target);
     var el=e.target,to=+el.getAttribute('data-count'),pre=el.getAttribute('data-pre')||'',suf=el.getAttribute('data-suf')||'',t0=null;
-    function f(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/1100),v=Math.round(to*(1-Math.pow(1-p,3)));el.textContent=pre+fmt(v)+suf;if(p<1)requestAnimationFrame(f)}
+    function f(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/1100),v=Math.round(to*(1-Math.pow(1-p,3)));el.innerHTML=rs(pre)+fmt(v)+suf;if(p<1)requestAnimationFrame(f)}
     requestAnimationFrame(f)})},{threshold:.6}):null;
-  nums.forEach(function(el){if(co){var to=+el.getAttribute('data-count');el.textContent=(el.getAttribute('data-pre')||'')+'0'+(el.getAttribute('data-suf')||'');co.observe(el)}})
+  nums.forEach(function(el){if(co){var to=+el.getAttribute('data-count');el.innerHTML=rs(el.getAttribute('data-pre')||'')+'0'+(el.getAttribute('data-suf')||'');co.observe(el)}})
 }
 
 /* mobile menu */
