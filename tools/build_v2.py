@@ -4,7 +4,7 @@ VOICE_AGENT_ID='agent_4501m89wekzhe6ys4kedff6spmjn'   # ElevenLabs agent id (pri
 WHATSAPP_NUMBER='15551847712'  # WhatsApp business number, digits only with country code (e.g. 91XXXXXXXXXX); empty hides the link
 # Branch switch. True on skills-lab-v2-ai (numentis1.vercel.app): floating WhatsApp/call circles, AI voice and WhatsApp buttons.
 # False on skills-lab-v2 (numentis.vercel.app, the client review site): none of them. Keep each branch's value when merging.
-CONTACT_FEATURES=True
+CONTACT_FEATURES=False
 if not CONTACT_FEATURES: VOICE_AGENT_ID=WHATSAPP_NUMBER=''
 FONTS="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=JetBrains+Mono:wght@400;500&family=Onest:wght@300..600&display=swap"
 
