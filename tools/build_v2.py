@@ -1,6 +1,6 @@
 import pathlib,json
 OUT=pathlib.Path(__file__).resolve().parent.parent
-VOICE_AGENT_ID=''   # ElevenLabs agent id (printed by tools/elevenlabs_agent.py); empty hides the voice button
+VOICE_AGENT_ID='agent_4501m89wekzhe6ys4kedff6spmjn'   # ElevenLabs agent id (printed by tools/elevenlabs_agent.py); empty hides the voice button
 WHATSAPP_NUMBER=''  # WhatsApp business number, digits only with country code (e.g. 91XXXXXXXXXX); empty hides the link
 FONTS="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=JetBrains+Mono:wght@400;500&family=Onest:wght@300..600&display=swap"
 
