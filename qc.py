@@ -68,10 +68,10 @@ async def main():
               o.btn=[...document.querySelectorAll('.btn--primary')].map(e=>[cs(e).backgroundColor,cs(e).color]);
               return o}''')
             n=path
-            rec('T2'+n,'body Onest 15px/400/lh1.5/ls -0.01em ink',"Onest" in m['body'][0] and m['body'][1]=='15px' and m['body'][2]=='400' and m['body'][3]=='22.5px' and abs(float(m['body'][4][:-2])+.15)<.01 and m['body'][5]=='rgb(15, 20, 25)',str(m['body']))
+            rec('T2'+n,'body Onest 16px/400/lh1.55/ls -0.01em ink',"Onest" in m['body'][0] and m['body'][1]=='16px' and m['body'][2]=='400' and m['body'][3]=='24.8px' and abs(float(m['body'][4][:-2])+.16)<.01 and m['body'][5]=='rgb(15, 20, 25)',str(m['body']))
             hh=[x for x in m['heads'] if x[0] in('H1','H2')]
             rec('T3'+n,'h1/h2 Fraunces 400 lh1.05 ls-0.03em(or tighter for display) opsz144',all('Fraunces' in x[1].replace('"','') and x[2]=='400' and x[3]=='1.050' and 'opsz' in x[5] and '144' in x[5] and float(x[4])<=-.029 for x in hh),str([x for x in hh if not('Fraunces' in x[1].replace('"','') and x[3]=='1.050' and float(x[4])<=-.029)]))
-            lb=m['labels'];rec('T4'+n,'labels JetBrains Mono 11px uppercase ls .18em',all('JetBrains' in x[0] and x[1]=='11px' and x[2]=='uppercase' and abs(float(x[3])-.18)<.01 for x in lb),str([x for x in lb if not('JetBrains' in x[0] and x[1]=='11px' and abs(float(x[3])-.18)<.01)][:3]))
+            lb=m['labels'];rec('T4'+n,'labels JetBrains Mono 12px uppercase ls .18em',all('JetBrains' in x[0] and x[1]=='12px' and x[2]=='uppercase' and abs(float(x[3])-.18)<.01 for x in lb),str([x for x in lb if not('JetBrains' in x[0] and x[1]=='12px' and abs(float(x[3])-.18)<.01)][:3]))
             rec('T5'+n,'Footer tagline Fraunces italic',all('Fraunces' in x[0].replace('"','') and x[1]=='italic' for x in m['tag']))
             rec('T5b'+n,'Heading italics Fraunces italic in terracotta',all(x[0]=='italic' and x[1]=='rgb(194, 65, 12)' for x in m['em']),str(m['em'][:2]))
             rec('C3b'+n,'CTA buttons exact terracotta / paper text',all(x[0]=='rgb(194, 65, 12)' for x in m['btn']))
