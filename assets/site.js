@@ -114,6 +114,11 @@ $$('[data-voice]').forEach(function(b){b.addEventListener('click',function(){
     var s=d.createElement('script');s.src='https://unpkg.com/@elevenlabs/convai-widget-embed';s.async=true;d.head.appendChild(s);
   }
   d.body.classList.add('voice-on');
+  /* one click = one call: press the widget's own "Start a call" once it has loaded */
+  var n=0,t=setInterval(function(){
+    var w=$('elevenlabs-convai'),sr=w&&w.shadowRoot,go=sr&&sr.querySelector('button[aria-label="Start a call"]');
+    if(go){clearInterval(t);go.click()}else if(++n>50)clearInterval(t);
+  },200);
   $$('.talk [data-voice]').forEach(function(x){x.textContent='Assistant ready, bottom right of the screen'});
 })});
 onScroll();

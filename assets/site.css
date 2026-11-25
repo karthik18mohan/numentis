@@ -174,7 +174,8 @@ h3{font-family:var(--serif);font-weight:400;line-height:1.15;letter-spacing:-.02
 .foot__base a{color:inherit}
 @media (max-width:700px){.legal__row{grid-template-columns:1fr}}
 .dock{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:40;display:flex;flex-direction:column;gap:12px;transition:transform .4s var(--ease)}
-.voice-on .dock{transform:translateY(-88px)}
+.voice-on .dock{transform:translateY(-150px)}
+.voice-on .dock [data-voice]{display:none}
 .dock__b{width:54px;height:54px;padding:0;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--paper);border:1px solid rgba(250,250,247,.28);box-shadow:0 8px 24px rgba(15,20,25,.28);cursor:pointer;transition:transform .25s var(--ease),background .25s ease,color .25s ease,border-color .25s ease}
 .dock__b:hover,.dock__b:focus-visible{transform:translateY(-2px);background:var(--paper);color:var(--ink);border-color:var(--ink)}
 .dock__b svg{width:24px;height:24px}
