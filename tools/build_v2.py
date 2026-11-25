@@ -2,6 +2,10 @@ import pathlib,json
 OUT=pathlib.Path(__file__).resolve().parent.parent
 VOICE_AGENT_ID='agent_4501m89wekzhe6ys4kedff6spmjn'   # ElevenLabs agent id (printed by tools/elevenlabs_agent.py); empty hides the voice button
 WHATSAPP_NUMBER='15551847712'  # WhatsApp business number, digits only with country code (e.g. 91XXXXXXXXXX); empty hides the link
+# Branch switch. True on skills-lab-v2-ai (numentis1.vercel.app): floating WhatsApp/call circles, AI voice and WhatsApp buttons.
+# False on skills-lab-v2 (numentis.vercel.app, the client review site): none of them. Keep each branch's value when merging.
+CONTACT_FEATURES=True
+if not CONTACT_FEATURES: VOICE_AGENT_ID=WHATSAPP_NUMBER=''
 FONTS="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=JetBrains+Mono:wght@400;500&family=Onest:wght@300..600&display=swap"
 
 def head(title,desc,page):
@@ -116,6 +120,7 @@ WA_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d=
 CALL_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>'
 
 def dock():
+    if not CONTACT_FEATURES: return ''
     if WHATSAPP_NUMBER:
         wa=f'<a class="dock__b" href="https://wa.me/{WHATSAPP_NUMBER}?text=Hi" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">{WA_SVG}</a>'
     else:
