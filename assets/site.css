@@ -309,3 +309,27 @@ dialog::backdrop{background:rgba(15,20,25,.72)}
 .label{font-size:12px}
 .card p:not(.label),.about,.foot__biz li{font-size:16px}
 @media (max-width:700px){.hero{height:auto;min-height:calc(100svh - var(--hdr))}.hero h1{font-size:clamp(3.2rem,16vw,6.4rem)}.ticker{margin-top:32px}}
+/* v4 hero: notebook grid. Every text row sits on a ruled line (pitch --rl). */
+.hero{--rl:clamp(32px,min(3.05vw,5.4svh),48px);--hf:2.5;--bo1:.408;--bo2:-.232;--bo3:.338;--bo4:.405;height:auto;min-height:calc(100svh - var(--hdr));padding-top:var(--rl)}
+.hero__ruled{background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--rl) - 1px),rgba(107,111,118,.16) calc(var(--rl) - 1px) var(--rl))}
+.hero__lit{background-image:repeating-linear-gradient(to bottom,transparent 0 calc(var(--rl) - 1px),rgba(250,250,247,.38) calc(var(--rl) - 1px) var(--rl))}
+.hero__eyebrow{height:var(--rl);align-items:flex-start}
+.hero__eyebrow .label{line-height:var(--rl);height:var(--rl);position:relative;top:calc(var(--bo1)*var(--rl))}
+.hero h1{font-size:calc(var(--rl)*var(--hf));line-height:1.05;margin-top:var(--rl);letter-spacing:-.04em}
+.hero h1 .ln{height:calc(var(--rl)*3);padding:0;margin:0;overflow:hidden}
+.hero h1 .ln>span{display:block;line-height:1.05;position:relative;top:calc(var(--bo2)*var(--rl))}
+.hero__row{display:block;margin-top:var(--rl)}
+.hero__lead{font-size:clamp(16px,calc(var(--rl)*.5),23px);line-height:var(--rl);letter-spacing:-.01em;font-weight:400;max-width:34em;position:relative;top:calc(var(--bo3)*var(--rl))}
+.hero__act{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start;margin-top:var(--rl)}
+.hero__act .btn{min-height:var(--rl);height:var(--rl);padding:0 22px;font-size:15px}
+.hero__note{margin-top:var(--rl);text-align:left;line-height:var(--rl);height:var(--rl);position:relative;top:calc(var(--bo4)*var(--rl))}
+.ticker{margin-top:auto}
+.hero{justify-content:flex-start}.hero .ticker{margin-top:auto}
+.phero__lead{font-size:clamp(16px,1.35vw,19px)}
+@media (max-width:700px){
+  .hero{--rl:26px;--hf:2.5;height:auto;min-height:0}
+  .hero h1{font-size:calc(var(--rl)*var(--hf))}
+  .hero__act .btn{height:calc(var(--rl)*2);min-height:calc(var(--rl)*2);width:100%}
+  .hero__act{gap:0;row-gap:calc(var(--rl)*.0)}
+  .hero__note{height:auto;line-height:var(--rl)}
+}

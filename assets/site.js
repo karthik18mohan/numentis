@@ -41,7 +41,7 @@ function lightWords(){
   if(!words.length)return;
   if(reduce){words.forEach(function(w){w.classList.add('lit')});return}
   var r=gap.getBoundingClientRect(),vh=window.innerHeight;
-  var p=(vh*.82-r.top)/(r.height+vh*.25);p=Math.max(0,Math.min(1,p));
+  var p=(vh*.92-r.top)/(r.height+vh*.22);if(r.bottom<vh*.75)p=1;p=Math.max(0,Math.min(1,p));
   var n=Math.round(p*words.length);
   words.forEach(function(w,i){w.classList.toggle('lit',i<n)});
 }
