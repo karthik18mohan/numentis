@@ -58,10 +58,13 @@ export async function askAssistant(userText, userName) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
       contents: [{ role: 'user', parts: [{ text: userText.slice(0, 2000) }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 400 },
+      generationConfig: { temperature: 0.3, maxOutputTokens: 800, thinkingConfig: { thinkingBudget: 0 } },
     }),
   });
   if (!r.ok) { console.error('gemini failed', r.status, await r.text()); return null; }
   const j = await r.json();
-  return (j.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('').trim() || null;
+  const c = j.candidates?.[0];
+  const text = (c?.content?.parts || []).map((p) => p.text || '').join('').trim();
+  if (!text) console.error('gemini empty', c?.finishReason, JSON.stringify(j.promptFeedback || {}));
+  return text || null;
 }
