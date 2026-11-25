@@ -50,7 +50,7 @@ export const HANDOFF = '[[HANDOFF]]';
 export async function askAssistant(userText, userName) {
   const key = env('GEMINI_API_KEY');
   if (!key) return null;
-  const model = env('GEMINI_MODEL') || 'gemini-2.5-flash';
+  const model = env('GEMINI_MODEL') || 'gemini-3.8-flash';
   const system = `${KB}\n\n## Channel\nYou are replying on WhatsApp${userName ? ` to ${userName}` : ''}. Each message arrives without the earlier conversation, so do not refer to "earlier". If this looks like the first message (a greeting or a general question), start by saying you are the Numentis Skills Lab AI assistant. When you must hand over to a human counsellor, reply with a short line saying a counsellor will message them, and end the reply with ${HANDOFF}.`;
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: 'POST',
@@ -58,7 +58,7 @@ export async function askAssistant(userText, userName) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
       contents: [{ role: 'user', parts: [{ text: userText.slice(0, 2000) }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 800, thinkingConfig: { thinkingBudget: 0 } },
+      generationConfig: { temperature: 0.3, maxOutputTokens: 2048 },
     }),
   });
   if (!r.ok) { console.error('gemini failed', r.status, await r.text()); return null; }
