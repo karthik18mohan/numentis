@@ -168,6 +168,11 @@ h3{font-family:var(--serif);font-weight:400;line-height:1.15;letter-spacing:-.02
 .cta p.lead{font-size:16px;color:rgba(15,20,25,.8);max-width:26em}
 .cta .btn{margin-top:26px}
 .talk{display:flex;flex-wrap:wrap;gap:12px}
+.legal__row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(16px,2.88vw,46px);padding:26px 0;border-bottom:1px solid var(--hair)}
+.legal__row h2{font-size:clamp(1.5rem,2.2vw,1.9rem)}
+.legal__row p{max-width:40em}
+.foot__base a{color:inherit}
+@media (max-width:700px){.legal__row{grid-template-columns:1fr}}
 .dock{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:40;display:flex;flex-direction:column;gap:12px;transition:transform .4s var(--ease)}
 .voice-on .dock{transform:translateY(-88px)}
 .dock__b{width:54px;height:54px;padding:0;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--paper);border:1px solid rgba(250,250,247,.28);box-shadow:0 8px 24px rgba(15,20,25,.28);cursor:pointer;transition:transform .25s var(--ease),background .25s ease,color .25s ease,border-color .25s ease}
