@@ -1,7 +1,7 @@
 import pathlib,json,hashlib
 OUT=pathlib.Path(__file__).resolve().parent.parent
 # CSS/JS are cached for a year, so every build stamps their URLs with a content hash.
-V=lambda f:hashlib.md5((OUT/'assets'/f).read_bytes()).hexdigest()[:10]
+V=lambda f:hashlib.md5((OUT/'assets'/f).read_bytes().replace(b'\r\n',b'\n')).hexdigest()[:10]  # line-ending neutral
 VOICE_AGENT_ID='agent_4501m89wekzhe6ys4kedff6spmjn'   # ElevenLabs agent id (printed by tools/elevenlabs_agent.py); empty hides the voice button
 WHATSAPP_NUMBER='15551847712'  # WhatsApp business number, digits only with country code (e.g. 91XXXXXXXXXX); empty hides the link
 # Branch switch. True on skills-lab-v2-ai (numentis1.vercel.app): floating WhatsApp/call circles, AI voice and WhatsApp buttons.
