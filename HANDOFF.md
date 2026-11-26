@@ -87,3 +87,9 @@ Owner: Karthik (freelance web developer; data scientist by day). Client: a new c
 - WhatsApp bot: Meta delivers messages (WABA 1453085660373335 linked to the app with `tools/wa_subscribe.ps1`), but replies fail with 131031 "Business account locked" until Numentis completes Meta business verification. Gemini default model `gemini-3.8-flash`, with fallbacks to other flash models when busy.
 - Call circle: one click starts a call with ElevenLabs agent `agent_4501m89wekzhe6ys4kedff6spmjn` (Karthik's ElevenLabs account, free plan, 15 min a month, no commercial licence; Starter or higher before launch). The agent was set up in the ElevenLabs dashboard: knowledge base prompt, English and Malayalam, `book_counselling` tool to `/api/lead`, allowlist numentis.vercel.app, numentis1.vercel.app, numentis-skills.vercel.app, numentis.in, www.numentis.in.
 - Before launch: Vercel Pro (Hobby is non-commercial), ElevenLabs Starter or higher, Gemini paid tier (free Flash is about 20 requests a day), Meta business verification.
+
+## 11. Speed work (26 Nov 2026)
+
+- CSS, JS and fonts are cached for a year. After editing `assets/site.css` or `assets/site.js`, always run `python tools/build_v2.py`: it stamps their URLs with `?v=<hash>` so visitors get the new file. If a font file ever changes, give it a new file name.
+- Hero spotlight moves with `transform` only and pauses when off screen; the grain sits under it so nothing re-blends per frame. Progress rule uses CSS scroll-driven animation where supported, JS once per frame elsewhere.
+- Measured on the live site (headless Chrome): desktop hero 45 fps with stutters, now 60; desktop main text visible at 2.2 s, now 0.54 s; page weight 309 KB, now 253 KB (rupee font 58 KB to 1.5 KB).
