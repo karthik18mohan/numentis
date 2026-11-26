@@ -118,6 +118,7 @@ async def main():
         links=set(re.findall(r'href="(/[^"#]*)',html))
         bad=[]
         for l in links:
+            l=l.split('?')[0]
             pth=l if l!='/' else '/index.html'
             if '.' not in pth.split('/')[-1]:pth+='.html'
             if not (SITE/pth.lstrip('/')).exists():bad.append(l)
